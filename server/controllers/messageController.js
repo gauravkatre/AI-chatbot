@@ -1,5 +1,5 @@
 import Chat from "../models/chatModel.js";
-import openai from "../configs/OPENAI.js"
+import openai from "../configs/openai.js";
 import User from "../models/userModel.js";
 import imagekit from "../configs/imagekit.js";
 import axios from 'axios';

@@ -1,4 +1,4 @@
-import {OpenAI} from 'openai'
+import {OpenAI} from 'openai.js'
 
 const openai = new OpenAI({
     apiKey: process.env.GEMINI_KEY,

@@ -1,5 +1,5 @@
 import Transaction from "../models/transactionModel.js";
-import Stripe from 'stripe'
+import Stripe from 'stripe';
 
 
 
