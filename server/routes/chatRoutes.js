@@ -1,6 +1,6 @@
 import express from 'express';
-import { protect } from '../middlewares/auth';
-import { createChat,deleteChats,getChats } from '../controllers/chatController';
+import { protect } from '../middlewares/auth.js';
+import { createChat,deleteChats,getChats } from '../controllers/chatController.js';
 
 const chatRouter=express.Router()
 

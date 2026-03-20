@@ -1,6 +1,6 @@
 import express from 'express';
-import { textMessage,imageMessageController } from '../controllers/messageController';
-import { protect } from '../middlewares/auth';
+import { textMessage,imageMessageController } from '../controllers/messageController.js';
+import { protect } from '../middlewares/auth.js';
 const messageRouter=express.Router()
 
 messageRouter.post('/text', protect, textMessage)
