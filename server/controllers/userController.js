@@ -1,4 +1,7 @@
 import User from '../models/userModel.js';
+import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt';
+import Chat from '../models/chatModel.js'
 
 
 const generateToken=(id)=>{
@@ -7,6 +10,7 @@ const generateToken=(id)=>{
 
 export const registerUser=async(req,res)=>{
     const {name,email,password}=req.body
+   
     try {
         const existingUser=await User.findOne({email})
         if(existingUser){
@@ -16,7 +20,7 @@ export const registerUser=async(req,res)=>{
         const token=generateToken(user._id)
         res.status(201).json({ success:true, message:"User created successfully",  token });
     } catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }
 }
 
@@ -34,7 +38,7 @@ export const loginUser=async(req,res)=>{
         const token=generateToken(user._id)
         res.status(200).json({ success:true, message:"Login successful",  token }); 
     } catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }
 }
 
@@ -43,20 +47,44 @@ export const getUser=async(req,res)=>{
         const user=req.user
         res.status(200).json({ success:true, user })
     } catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }   
 }
 
-export const getPublishedImages=async(req,res)=>{
-    try {
-        publishedImageMessages=await Chat.aggregate([
-            {$unwind:'$messages'},
-            {$match:{'messages.isImage':true, 'messages.isPublished':true}},
-            {$project:{_id:0, imageUrl:'$messages.content', username:'$username'}}
-        ])
-        res.status(200).json({ success:true, images:publishedImageMessages.reverse() })
-    }
-    catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
-     };
-}
+export const getPublishedImages = async (req, res) => {
+  try {
+    const publishedImageMessages = await Chat.aggregate([
+      { $unwind: "$messages" },
+
+      {
+        $match: {
+          "messages.isImage": true,
+          "messages.isPublished": true,
+           "messages.role": "assistant"
+        },
+      },
+
+      {
+        $sort: { "messages.createdAt": -1 }, // 🔥 latest first
+      },
+
+      {
+        $project: {
+          _id: 0,
+          imageUrl: "$messages.content",
+          username: "$username", // ⚠️ check this field
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      images: publishedImageMessages,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

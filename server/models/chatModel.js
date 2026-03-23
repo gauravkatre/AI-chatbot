@@ -14,7 +14,7 @@ const chatSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    message: [
+    messages: [
         {
             isImage: {  
                 type: Boolean,

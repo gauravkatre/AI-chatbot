@@ -4,6 +4,7 @@ import Chat from "../models/chatModel.js";
 export const createChat = async (req,res) =>{
     try {
         const userId=req.user._id
+        console.log("USER 👉", req.user);
         const chatData={
             userId,
             messages:[],
@@ -14,7 +15,7 @@ export const createChat = async (req,res) =>{
         res.status(201).json({ success:true, message:"Chat created successfully"})
     }
     catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }
 }
 
@@ -26,7 +27,7 @@ export const getChats = async (req,res) =>{
         res.status(200).json({ success:true, message:"Chats retrieved successfully", chats })
     }
     catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }
 }
 
@@ -35,11 +36,11 @@ export const getChats = async (req,res) =>{
 export const deleteChats = async (req,res) =>{
     try {
         const userId=req.user._id
-        const chatId=req.body.id
+        const {chatId}=req.body
         await Chat.findByIdAndDelete(chatId)
         res.status(200).json({ success:true, message:"Chat deleted successfully"})
     }
     catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
     }
 }

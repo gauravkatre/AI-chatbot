@@ -32,7 +32,7 @@ export const getPlans = async (req,res) =>{
         res.status(200).json({ success:true, plans })   
         }
         catch (error) {
-            res.status(500).json({ success:false, message:"Server error"})
+            res.status(500).json({ success:false, message:error.message})
         };
     }
 
@@ -80,6 +80,6 @@ export const purchasePlan = async (req,res) =>{
    res.status(200).json({ success:true, url: session.url })
     }
     catch (error) {
-        res.status(500).json({ success:false, message:"Server error"})
+        res.status(500).json({ success:false, message:error.message})
         };
     }

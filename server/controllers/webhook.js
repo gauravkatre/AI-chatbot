@@ -27,7 +27,7 @@ export const stripeWebhooks = async (request, response) => {
 
     switch (event.type) {
 
-      case "payment_intent.succeeded": {
+      case "checkout.session.completed": {
 
         const paymentIntent = event.data.object;
 
@@ -44,7 +44,7 @@ export const stripeWebhooks = async (request, response) => {
 
         const { transactionId, appId } = session.metadata;
 
-        if (appId === 'quickgpt') {
+        if (appId === 'QuickGpt') {
 
           const transaction = await Transaction.findOne({
             _id: transactionId,

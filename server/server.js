@@ -15,6 +15,7 @@ await connectDB();
 app.post('/api/stripe',express.raw({type:'application/json'}),stripeWebhooks)
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/api/users',userRouter)
 app.use('/api/chats',chatRouter)
 app.use('/api/messages',messageRouter)
